@@ -7,12 +7,44 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <!-- backward compatability -->
     <bean id="myMotivation" class="udemy.spring.demo1.StickMotivation">
     </bean>
 
-    <bean id="myCoach" class="udemy.spring.demo1.BB_Coach">
-        <constructor-arg ref="myMotivation" />
+    <context:property-placeholder location="classpath:sport.properties"/>
+
+    <!--multi scope-->
+    <bean id="myMultiScopeCoach" class="udemy.spring.demo1.TrackCoach" scope="prototype">
     </bean>
+
+
+
+    <!-- constructor based guff-->
+    <bean id="myConstructorMotivation" class="udemy.spring.demo1.StickMotivation">
+    </bean>
+    <bean id="myConstructorBasedCoach" class="udemy.spring.demo1.BB_Coach">
+        <constructor-arg ref="myConstructorMotivation" />
+    </bean>
+
+
+    <!-- setter based guff-->
+    <bean id="mySetterMotivation" class="udemy.spring.demo1.CarrotMotivation">
+    </bean>
+    <bean id="mySetterBasedCoach" class="udemy.spring.demo1.RugbyCoach">
+        <property name="motivation" ref="mySetterMotivation" />
+        <property name="name" value="Eddie Jones"/>
+        <property name="country" value="${xx.country}"/>
+    </bean>
+
+
+    <!-- initialise and destroy methods-->
+    <bean id="myMethodsCoach"
+          class="udemy.spring.demo1.RugbyUnionCoach"
+          init-method="onInit"
+          destroy-method="onQuit"
+    >
+    </bean>
+
 
 </beans>
 
